@@ -44,6 +44,7 @@ import { Most } from "../model/Most";
 import { Item } from "../model/Item";
 import { Matches as MatchesModel } from "../model/Matches";
 import Matches from "@/components/matches/Matches.vue";
+import { lazyInject } from "../container/container";
 
 @Options({
   components: {
@@ -62,7 +63,8 @@ export default class Main extends Vue {
 
   private item: Item = null;
 
-  private summonerService: SummonerService = new SummonerService();
+  @lazyInject(SummonerService.name)
+  private summonerService: SummonerService;
 
   public created(): void {
     this.subscribeSummoner();

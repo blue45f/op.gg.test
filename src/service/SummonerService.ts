@@ -6,7 +6,9 @@ import { Most } from "../model/Most";
 import { Matches } from "../model/Matches";
 import { MatchDetail } from "../model/MatchDetail";
 import { Item } from "../model/Item";
+import { injectable } from "inversify";
 
+@injectable()
 export class SummonerService {
   private summonerSubject: Subject<Summoner> = new Subject<Summoner>();
 
@@ -39,7 +41,7 @@ export class SummonerService {
   }
 
   public getSummoner(summonerName: string): void {
-    ajax(`https://codingtest.op.gg/api/summoner/${summonerName}`)
+    this.ajaxGetSummoner(summonerName)
       .pipe(map((response: AjaxResponse) => response.response.summoner))
       .subscribe(
         (response: Summoner): void => {
@@ -49,6 +51,10 @@ export class SummonerService {
           console.log(`error`, error);
         }
       );
+  }
+
+  public ajaxGetSummoner(summonerName: string): Observable<AjaxResponse> {
+    return ajax(`https://codingtest.op.gg/api/summoner/${summonerName}`);
   }
 
   public getMost(summonerName: string): void {
